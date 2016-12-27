@@ -5,7 +5,7 @@ public class Main {
 	public static void main(String[] args) {
 		SCCFinder finder = new SCCFinder();
 		
-		Graph1 graph1 = new Graph1(getInput1());
+		Graph1 graph1 = new Graph1(getInput2());
 		Graph1 graph1Reverse = graph1.reverse();
 		
 		finder.sort(graph1Reverse, g -> g.getAll(), finder::dfsSortReverse);
@@ -30,6 +30,26 @@ public class Main {
 			{ 7 }
 		};
 
+		return edges;
+	}
+	
+	private static int[][] getInput2() {
+		int[][] edges = new int[][] { 
+			{ 2 , 6 },
+			{ 3 },
+			{ 1 },
+			{ 5 },
+			{ 6 },
+			{ 4, 7 },
+			{ 8 },
+			{ 9 },
+			{ 10 },
+			{ 7 },
+			{ 12 },
+			{ 7, 13 },
+			{ 11 }
+		};
+		
 		return edges;
 	}
 }
