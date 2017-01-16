@@ -1,12 +1,12 @@
-package dijkstras_shortest_path;
+package dijkstras_shortest_path_with_heap;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Graph2 g = new Graph2(getInput1(), 4);
+		Graph3 g = new Graph3(getInput1(), 4);
 		System.out.println(g.toString());
 		
-		new DijkstrasShortPath().execute(g, 1);
+		new DijkstrasShortPath3().execute(g, 1);
 		
 		System.out.println(g.toString());
 	}
