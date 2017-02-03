@@ -1,5 +1,8 @@
 package binary_tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tree {
 
 	private Vertex4 root;
@@ -80,5 +83,103 @@ public class Tree {
 
 		return parent;
 	}
+	
+	public Vertex4 min() {
+		return extremum(root, v->v.getLeft());
+	}
 
+	public Vertex4 max() {
+		return extremum(root, v->v.getRight());
+	}
+	
+	public Vertex4 min(Vertex4 subRoot) {
+		return extremum(subRoot, v->v.getLeft());
+	}
+	
+	public Vertex4 max(Vertex4 subRoot) {
+		return extremum(subRoot, v->v.getRight());
+	}
+	
+	private Vertex4 extremum(Vertex4 startVertex, Extremum ext) {
+		Vertex4 v = startVertex;
+		while(ext.candidate(v) != null) {
+			v = ext.candidate(v);
+		}
+		return v;
+	}
+	
+	public void printTree() {
+		List<Vertex4> l = new ArrayList<>();
+		l.add(root);
+		internallyPrintTree(l);
+	}
+	
+	private void internallyPrintTree(List<Vertex4> list) {
+		List<Vertex4> newList = new ArrayList<>();
+		
+		boolean stop = true;
+		for(Vertex4 v: list) {
+			if(v != null) {
+				System.out.print(v.getValue() + " ");
+				
+				newList.add(v.getLeft());
+				newList.add(v.getRight());
+				
+				if(v.getLeft() != null || v.getRight() != null ) {
+					stop = false;
+				}
+			}else {
+				System.out.print("e ");
+				
+				newList.add(null);
+				newList.add(null);
+			}
+		}
+		System.out.println();
+		
+		if(stop) {
+			return;
+		} else {
+			internallyPrintTree(newList);
+		}
+	}
+	
+	/**
+	 * Find predecessor for vertex v
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public Vertex4 predecessor(Vertex4 v) {
+		return findPOS(v, ve->ve.getLeft(), (v1,v2)->v1.getValue() > v2.getValue(), v3->max(v3));
+	}
+	
+	/**
+	 * Find successor for vertex v
+	 * 
+	 * @param v
+	 * @return
+	 */
+	public Vertex4 successor(Vertex4 v) {
+		return findPOS(v, ve->ve.getRight(), (v1,v2)->v1.getValue() < v2.getValue(), v3->min(v3));
+	}
+	
+	/**
+	 * POS - predecessor or successor
+	 * 
+	 * @param v
+	 * @param c
+	 * @param nc
+	 * @param f
+	 * @return
+	 */
+	private Vertex4 findPOS(Vertex4 v, Child c, NodeComparator nc, ExtremumFunction f) {
+		if (c.get(v) != null) {
+			return f.ext(c.get(v));
+		} else {
+			Vertex4 parent = v;
+			while ((parent = parent.getParent()) != null && nc.compare(parent, v));
+			return parent;
+		}
+	}
 }
